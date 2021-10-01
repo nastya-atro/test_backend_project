@@ -5,13 +5,9 @@ const events = require('events')
 const PORT = 5000;
 const app = express()
 const emitter = new events.EventEmitter();
+app.use(express.json())
 
 app.use(cors())
-// let corsOptions = {
-//     origin: '*',
-//     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-// }
-
 
 app.get('/get-messages', ((req, res) => {
 emitter.once('newMessage', (message) => {
@@ -22,8 +18,8 @@ emitter.once('newMessage', (message) => {
 app.post('/new-messages', ((req, res) => {
     console.log(req.body)
     const message = req.body;
-   // emitter.emit(('newMessage', message))
-    res.status(200)
+    emitter.emit(('newMessage', message))
+    return res.json(message)
 }))
 
 
