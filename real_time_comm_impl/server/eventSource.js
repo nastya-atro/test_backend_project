@@ -9,12 +9,16 @@ const emitter = new EventEmitter();
 app.use(cors())
 app.use(express.json())
 
-app.get('/get-messages', ((req, res) => {
-
-emitter.once('newMessage', (message) => {
-     res.json(message)
+app.get('/connect', (req, res) => {
+    res.writeHead(200, {
+        'Connection': 'keep-alive',
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+    })
+    emitter.on('newMessage', (message) => {
+        res.write(`data: ${JSON.stringify(message)} \n\n`)
+    })
 })
-}))
 
 app.post('/new-messages', ((req, res) => {
     const message = req.body;
