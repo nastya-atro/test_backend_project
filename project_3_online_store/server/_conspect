@@ -1,0 +1,5 @@
+npm init
+npm i express pg pg-hstore sequelize cors dotenv
+npm i -D nodemon
+"dev": "nodemon index.js"
+
